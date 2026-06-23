@@ -17,5 +17,5 @@ app.use("/registrations", registrationRoutes);
 app.use("/colleges", collegeRoutes);
 
 app.listen(3001, () => {
-  console.log("Server running on port 3001");
+  console.log("Server running at http://localhost:3001");
 });
