@@ -9,6 +9,7 @@ Keegan Morris
 npm install
 npm run dev
 
+Use http://localhost:3000 or Set Local host
  "All the Routes are here"
 /users
 /events
