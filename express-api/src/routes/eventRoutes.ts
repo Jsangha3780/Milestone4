@@ -42,27 +42,25 @@ router.post("/", async (req: Request, res: Response) => {
   });
 });
 
-// UPDATE event
+// PUT update event
 router.put("/:id", async (req: Request, res: Response) => {
   const { title, event_date, location } = req.body;
-  const eventId = req.params.id;
 
-  const [existingRows]: any = await pool.query("SELECT * FROM events WHERE id = ?", [eventId]);
-  if (!existingRows || existingRows.length === 0) {
-    return res.status(404).json({ message: `Event ${eventId} not found` });
-  }
-
-  const existing = existingRows[0];
-  const updatedTitle = title ?? existing.title;
-  const updatedDate = event_date ?? existing.event_date;
-  const updatedLocation = location ?? existing.location;
-
-  await pool.query(
+  const [result]: any = await pool.query(
     "UPDATE events SET title = ?, event_date = ?, location = ? WHERE id = ?",
-    [updatedTitle, updatedDate, updatedLocation, eventId]
+    [title, event_date, location, req.params.id]
   );
 
-  res.json({ message: `Event ${eventId} updated` });
+  if (result.affectedRows === 0) {
+    return res.status(404).json({ message: `Event ${req.params.id} not found` });
+  }
+
+  res.json({
+    message: `Event ${req.params.id} updated`,
+    title,
+    event_date,
+    location
+  });
 });
 
 // DELETE event
